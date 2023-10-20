@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3 uid="uid://b0fajb1o0qyh5"]
+
+[ext_resource type="Script" path="res://CeilingAndFloor.gd" id="1_563ql"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1bfxh"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_3ppnc"]
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_bvmuk"]
+
+[node name="CeilingAndFloor" type="Area2D"]
+script = ExtResource("1_563ql")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_1bfxh")
+one_way_collision_margin = 20.0
+debug_color = Color(0.933333, 0, 0.65098, 0.419608)
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="."]
+scale = Vector2(20, 20)
+mesh = SubResource("BoxMesh_3ppnc")
+texture = SubResource("CanvasTexture_bvmuk")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

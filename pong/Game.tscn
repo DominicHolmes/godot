@@ -1,0 +1,67 @@
+[gd_scene load_steps=7 format=3 uid="uid://yub3chau7lii"]
+
+[ext_resource type="Script" path="res://Game.gd" id="1_fcixf"]
+[ext_resource type="PackedScene" uid="uid://byg5ygjmcn1pt" path="res://Paddle.tscn" id="1_vjht1"]
+[ext_resource type="PackedScene" uid="uid://b151yyl61ep1p" path="res://Ball.tscn" id="2_ikb67"]
+[ext_resource type="PackedScene" uid="uid://b0fajb1o0qyh5" path="res://CeilingAndFloor.tscn" id="4_jj65u"]
+[ext_resource type="PackedScene" uid="uid://srpgrc17iek7" path="res://Endzone.tscn" id="5_lf1s4"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_735f3"]
+font_color = Color(0, 0, 0, 1)
+
+[node name="Game" type="Node"]
+script = ExtResource("1_fcixf")
+ball_scene = ExtResource("2_ikb67")
+
+[node name="Paddle1" parent="." instance=ExtResource("1_vjht1")]
+position = Vector2(100, 300)
+is_player_1 = true
+
+[node name="Paddle2" parent="." instance=ExtResource("1_vjht1")]
+position = Vector2(1000, 300)
+
+[node name="CeilingAndFloor1" parent="." instance=ExtResource("4_jj65u")]
+position = Vector2(579, 616)
+scale = Vector2(60, 3)
+
+[node name="CeilingAndFloor2" parent="." instance=ExtResource("4_jj65u")]
+position = Vector2(583, 34)
+scale = Vector2(60, 3)
+
+[node name="Endzone1" parent="." instance=ExtResource("5_lf1s4")]
+position = Vector2(5, 346)
+scale = Vector2(5, 50)
+is_player_1 = true
+
+[node name="Endzone2" parent="." instance=ExtResource("5_lf1s4")]
+position = Vector2(1135, 350)
+scale = Vector2(5, 50)
+
+[node name="ScoreLabel1" type="Label" parent="."]
+offset_left = 85.0
+offset_top = 22.0
+offset_right = 125.0
+offset_bottom = 45.0
+text = "Score: 0"
+label_settings = SubResource("LabelSettings_735f3")
+
+[node name="ScoreLabel2" type="Label" parent="."]
+offset_left = 972.0
+offset_top = 23.0
+offset_right = 1033.0
+offset_bottom = 49.0
+text = "Score: 0"
+label_settings = SubResource("LabelSettings_735f3")
+
+[node name="BounceLabel" type="Label" parent="."]
+offset_left = 516.0
+offset_top = 24.0
+offset_right = 654.0
+offset_bottom = 50.0
+text = "Spacebar to serve"
+label_settings = SubResource("LabelSettings_735f3")
+
+[connection signal="ball_hit_paddle" from="Paddle1" to="." method="_on_ball_hit_paddle"]
+[connection signal="ball_hit_paddle" from="Paddle2" to="." method="_on_ball_hit_paddle"]
+[connection signal="ball_detected" from="Endzone1" to="." method="_on_endzone_1_ball_detected"]
+[connection signal="ball_detected" from="Endzone2" to="." method="_on_endzone_2_ball_detected"]
