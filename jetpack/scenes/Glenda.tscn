@@ -1,0 +1,74 @@
+[gd_scene load_steps=11 format=3 uid="uid://dfymuh2rwa480"]
+
+[ext_resource type="Texture2D" uid="uid://cjumja2rdjtt6" path="res://assets/B_witch_idle.png" id="1_3ccjr"]
+[ext_resource type="Script" path="res://scripts/Glenda.gd" id="1_u1jhf"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_twfe8"]
+atlas = ExtResource("1_3ccjr")
+region = Rect2(0, 0, 32, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bxshn"]
+atlas = ExtResource("1_3ccjr")
+region = Rect2(0, 48, 32, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wrmtv"]
+atlas = ExtResource("1_3ccjr")
+region = Rect2(0, 96, 32, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jgrlb"]
+atlas = ExtResource("1_3ccjr")
+region = Rect2(0, 144, 32, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n7igf"]
+atlas = ExtResource("1_3ccjr")
+region = Rect2(0, 192, 32, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_btysf"]
+atlas = ExtResource("1_3ccjr")
+region = Rect2(0, 240, 32, 48)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_rwq6x"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_twfe8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bxshn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wrmtv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jgrlb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n7igf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_btysf")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cprcv"]
+size = Vector2(15, 36)
+
+[node name="Glenda" type="CharacterBody2D"]
+script = ExtResource("1_u1jhf")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -18)
+sprite_frames = SubResource("SpriteFrames_rwq6x")
+animation = &"idle"
+autoplay = "idle"
+frame = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-0.5, -18)
+shape = SubResource("RectangleShape2D_cprcv")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(0, -174)
