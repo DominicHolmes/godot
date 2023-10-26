@@ -14,12 +14,16 @@ height = 8.0
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_gmhnj"]
 properties/0/path = NodePath(".:position")
 properties/0/spawn = true
-properties/0/sync = true
+properties/0/sync = false
 properties/0/watch = false
-properties/1/path = NodePath(".:rotation")
+properties/1/path = NodePath(".:initial_linear_velocity")
 properties/1/spawn = true
 properties/1/sync = true
 properties/1/watch = false
+properties/2/path = NodePath(".:rotation")
+properties/2/spawn = true
+properties/2/sync = false
+properties/2/watch = false
 
 [node name="Projectile" type="RigidBody2D"]
 collision_layer = 4

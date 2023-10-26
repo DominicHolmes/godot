@@ -365,6 +365,6 @@ replication_config = SubResource("SceneReplicationConfig_3yhj6")
 [node name="AimRotation" type="Node2D" parent="."]
 position = Vector2(2.08165e-12, -5)
 
-[node name="Sprite2D" type="Sprite2D" parent="AimRotation"]
+[node name="Reticle" type="Sprite2D" parent="AimRotation"]
 position = Vector2(10, 2.08165e-12)
 texture = SubResource("PlaceholderTexture2D_vdnt4")

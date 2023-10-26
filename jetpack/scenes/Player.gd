@@ -16,7 +16,8 @@ var jumps_remaining = 100
 @export var aim_rotation = 0.0
 
 func _enter_tree():
-	set_multiplayer_authority(str(name).to_int())
+	print("In player, multi_auth: ", get_parent().get_multiplayer_authority())
+	set_multiplayer_authority(get_parent().get_multiplayer_authority())
 
 func _physics_process(delta):
 	if not is_multiplayer_authority(): return
@@ -59,7 +60,7 @@ func _process(delta):
 	
 	if Input.is_action_just_pressed("shoot"):
 		var mouse_position = get_viewport().get_mouse_position()
-		fire_projectile.rpc(mouse_position)
+		fire_projectile(mouse_position)
 	
 func wrap_position_if_off_screen():
 	position.x = wrapf(position.x, 0, screen_size.x)
@@ -81,14 +82,14 @@ func update_animation():
 		else:
 			Anim.play("fly_forward")
 
-@rpc("authority", "call_local")
 func fire_projectile(mouse_position):
 	print("FIRE PROJECTILE")
 	print("is on server: ", multiplayer.is_server())
 	
 	var fireball = fireball_scene.instantiate()
 		# TODO: instead originate from Marker2D rotating around player
-	fireball.global_position = global_position
+	fireball.global_position = $AimRotation/Reticle.global_position
 	var mouse_direction = (mouse_position - global_position).normalized()
-	fireball.rotation = atan2(mouse_direction.y, mouse_direction.x)
+	fireball.rotation = aim_rotation
+	fireball.setup_initial_velocity()
 	get_parent().add_child(fireball, true)
