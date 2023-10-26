@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://d4anc650nekqw"]
+[gd_scene load_steps=5 format=3 uid="uid://d4anc650nekqw"]
 
-[ext_resource type="PackedScene" uid="uid://dfymuh2rwa480" path="res://scenes/Glenda.tscn" id="1_2ocyo"]
+[ext_resource type="Script" path="res://scripts/World.gd" id="1_phpf5"]
+[ext_resource type="PackedScene" uid="uid://dt0unpcr0qft0" path="res://scenes/Arena.tscn" id="2_l3gm5"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_mju6a"]
 size = Vector2(320, 10)
@@ -10,11 +11,8 @@ size = Vector2(320, 10)
 
 [node name="World" type="Node2D"]
 position = Vector2(2.08165e-12, 2.08165e-12)
+script = ExtResource("1_phpf5")
 metadata/_edit_lock_ = true
-
-[node name="Glenda" parent="." instance=ExtResource("1_2ocyo")]
-position = Vector2(172, 163)
-scale = Vector2(0.6, 0.6)
 
 [node name="Floor" type="StaticBody2D" parent="."]
 position = Vector2(160, 174)
@@ -32,122 +30,53 @@ metadata/_edit_lock_ = true
 position = Vector2(160, 90)
 offset = Vector2(2.08165e-12, 2.08165e-12)
 
-[node name="Platform" type="StaticBody2D" parent="."]
-position = Vector2(91, 115)
-scale = Vector2(0.2, 0.2)
+[node name="Level" parent="." instance=ExtResource("2_l3gm5")]
 
-[node name="MeshInstance2D" type="MeshInstance2D" parent="Platform"]
-mesh = SubResource("QuadMesh_mju6a")
-metadata/_edit_lock_ = true
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platform"]
-position = Vector2(2.08165e-12, 2.08165e-12)
-shape = SubResource("RectangleShape2D_htbtm")
-one_way_collision = true
-one_way_collision_margin = 2.0
-metadata/_edit_lock_ = true
+[node name="MainMenu" type="PanelContainer" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 17.0
+offset_top = 3.0
+offset_right = -17.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="Platform3" type="StaticBody2D" parent="."]
-position = Vector2(54, 78)
-scale = Vector2(0.2, 0.2)
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MainMenu"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
 
-[node name="MeshInstance2D" type="MeshInstance2D" parent="Platform3"]
-mesh = SubResource("QuadMesh_mju6a")
-metadata/_edit_lock_ = true
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MainMenu/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platform3"]
-position = Vector2(2.08165e-12, 2.08165e-12)
-shape = SubResource("RectangleShape2D_htbtm")
-one_way_collision = true
-one_way_collision_margin = 2.0
-metadata/_edit_lock_ = true
+[node name="Label" type="Label" parent="CanvasLayer/MainMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Main Menu"
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="Platform4" type="StaticBody2D" parent="."]
-position = Vector2(91, 42)
-scale = Vector2(0.2, 0.2)
+[node name="HostButton" type="Button" parent="CanvasLayer/MainMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Host"
 
-[node name="MeshInstance2D" type="MeshInstance2D" parent="Platform4"]
-mesh = SubResource("QuadMesh_mju6a")
-metadata/_edit_lock_ = true
+[node name="JoinButton" type="Button" parent="CanvasLayer/MainMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Join"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platform4"]
-position = Vector2(2.08165e-12, 2.08165e-12)
-shape = SubResource("RectangleShape2D_htbtm")
-one_way_collision = true
-one_way_collision_margin = 2.0
-metadata/_edit_lock_ = true
+[node name="AddressEnter" type="LineEdit" parent="CanvasLayer/MainMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+placeholder_text = "Enter Join Address"
 
-[node name="Platform2" type="StaticBody2D" parent="."]
-position = Vector2(54, 151)
-scale = Vector2(0.2, 0.2)
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://scenes/Glenda.tscn", "res://scenes/Projectile.tscn", "res://scenes/Player.tscn")
+spawn_path = NodePath("..")
 
-[node name="MeshInstance2D" type="MeshInstance2D" parent="Platform2"]
-mesh = SubResource("QuadMesh_mju6a")
-metadata/_edit_lock_ = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platform2"]
-position = Vector2(2.08165e-12, 2.08165e-12)
-shape = SubResource("RectangleShape2D_htbtm")
-one_way_collision = true
-one_way_collision_margin = 2.0
-metadata/_edit_lock_ = true
-
-[node name="Platform5" type="StaticBody2D" parent="."]
-position = Vector2(252, 108)
-scale = Vector2(0.2, 0.2)
-
-[node name="MeshInstance2D" type="MeshInstance2D" parent="Platform5"]
-mesh = SubResource("QuadMesh_mju6a")
-metadata/_edit_lock_ = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platform5"]
-position = Vector2(2.08165e-12, 2.08165e-12)
-shape = SubResource("RectangleShape2D_htbtm")
-one_way_collision = true
-one_way_collision_margin = 2.0
-metadata/_edit_lock_ = true
-
-[node name="Platform6" type="StaticBody2D" parent="."]
-position = Vector2(215, 71)
-scale = Vector2(0.2, 0.2)
-
-[node name="MeshInstance2D" type="MeshInstance2D" parent="Platform6"]
-mesh = SubResource("QuadMesh_mju6a")
-metadata/_edit_lock_ = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platform6"]
-position = Vector2(2.08165e-12, 2.08165e-12)
-shape = SubResource("RectangleShape2D_htbtm")
-one_way_collision = true
-one_way_collision_margin = 2.0
-metadata/_edit_lock_ = true
-
-[node name="Platform7" type="StaticBody2D" parent="."]
-position = Vector2(252, 35)
-scale = Vector2(0.2, 0.2)
-
-[node name="MeshInstance2D" type="MeshInstance2D" parent="Platform7"]
-mesh = SubResource("QuadMesh_mju6a")
-metadata/_edit_lock_ = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platform7"]
-position = Vector2(2.08165e-12, 2.08165e-12)
-shape = SubResource("RectangleShape2D_htbtm")
-one_way_collision = true
-one_way_collision_margin = 2.0
-metadata/_edit_lock_ = true
-
-[node name="Platform8" type="StaticBody2D" parent="."]
-position = Vector2(215, 144)
-scale = Vector2(0.2, 0.2)
-
-[node name="MeshInstance2D" type="MeshInstance2D" parent="Platform8"]
-mesh = SubResource("QuadMesh_mju6a")
-metadata/_edit_lock_ = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platform8"]
-position = Vector2(2.08165e-12, 2.08165e-12)
-shape = SubResource("RectangleShape2D_htbtm")
-one_way_collision = true
-one_way_collision_margin = 2.0
-metadata/_edit_lock_ = true
+[connection signal="pressed" from="CanvasLayer/MainMenu/MarginContainer/VBoxContainer/HostButton" to="." method="_on_host_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/MainMenu/MarginContainer/VBoxContainer/JoinButton" to="." method="_on_join_button_pressed"]

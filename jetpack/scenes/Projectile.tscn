@@ -1,6 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://ddvhfcds7i8ar"]
+[gd_scene load_steps=6 format=3 uid="uid://ddvhfcds7i8ar"]
 
-[ext_resource type="Script" path="res://scenes/Projectile.gd" id="1_r321p"]
+[ext_resource type="Script" path="res://scripts/Projectile.gd" id="1_kyaav"]
 [ext_resource type="PackedScene" uid="uid://dukpjn5x08bub" path="res://scenes/Trail.tscn" id="2_87t0o"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_p74d3"]
@@ -11,10 +11,20 @@ height = 8.0
 radius = 2.0
 height = 8.0
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_gmhnj"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/sync = true
+properties/0/watch = false
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/sync = true
+properties/1/watch = false
+
 [node name="Projectile" type="RigidBody2D"]
 collision_layer = 4
 collision_mask = 0
-script = ExtResource("1_r321p")
+script = ExtResource("1_kyaav")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 rotation = 1.5708
@@ -31,5 +41,8 @@ modulate = Color(0.992157, 0.329412, 0.180392, 1)
 show_behind_parent = true
 max_length = 8
 thickness = 2.0
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_gmhnj")
 
 [connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]

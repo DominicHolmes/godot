@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://dfymuh2rwa480"]
+[gd_scene load_steps=41 format=3 uid="uid://dfymuh2rwa480"]
 
 [ext_resource type="Texture2D" uid="uid://cjumja2rdjtt6" path="res://assets/B_witch_idle.png" id="1_3ccjr"]
 [ext_resource type="Script" path="res://scripts/Glenda.gd" id="1_u1jhf"]
@@ -255,7 +255,14 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_cprcv"]
 size = Vector2(15, 36)
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_crpmd"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/sync = true
+properties/0/watch = false
+
 [node name="Glenda" type="CharacterBody2D"]
+collision_layer = 2
 script = ExtResource("1_u1jhf")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -269,3 +276,6 @@ offset = Vector2(2.08165e-12, 2.08165e-12)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-0.5, -18)
 shape = SubResource("RectangleShape2D_cprcv")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_crpmd")

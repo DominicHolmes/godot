@@ -1,0 +1,129 @@
+[gd_scene load_steps=3 format=3 uid="uid://dt0unpcr0qft0"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_mju6a"]
+size = Vector2(320, 10)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_htbtm"]
+size = Vector2(320, 10)
+
+[node name="Level" type="Node2D"]
+
+[node name="Platform" type="StaticBody2D" parent="."]
+position = Vector2(91, 115)
+scale = Vector2(0.2, 0.2)
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="Platform"]
+mesh = SubResource("QuadMesh_mju6a")
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platform"]
+position = Vector2(2.08165e-12, 2.08165e-12)
+shape = SubResource("RectangleShape2D_htbtm")
+one_way_collision = true
+one_way_collision_margin = 2.0
+metadata/_edit_lock_ = true
+
+[node name="Platform3" type="StaticBody2D" parent="."]
+position = Vector2(54, 78)
+scale = Vector2(0.2, 0.2)
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="Platform3"]
+mesh = SubResource("QuadMesh_mju6a")
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platform3"]
+position = Vector2(2.08165e-12, 2.08165e-12)
+shape = SubResource("RectangleShape2D_htbtm")
+one_way_collision = true
+one_way_collision_margin = 2.0
+metadata/_edit_lock_ = true
+
+[node name="Platform4" type="StaticBody2D" parent="."]
+position = Vector2(91, 42)
+scale = Vector2(0.2, 0.2)
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="Platform4"]
+mesh = SubResource("QuadMesh_mju6a")
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platform4"]
+position = Vector2(2.08165e-12, 2.08165e-12)
+shape = SubResource("RectangleShape2D_htbtm")
+one_way_collision = true
+one_way_collision_margin = 2.0
+metadata/_edit_lock_ = true
+
+[node name="Platform2" type="StaticBody2D" parent="."]
+position = Vector2(54, 151)
+scale = Vector2(0.2, 0.2)
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="Platform2"]
+mesh = SubResource("QuadMesh_mju6a")
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platform2"]
+position = Vector2(2.08165e-12, 2.08165e-12)
+shape = SubResource("RectangleShape2D_htbtm")
+one_way_collision = true
+one_way_collision_margin = 2.0
+metadata/_edit_lock_ = true
+
+[node name="Platform5" type="StaticBody2D" parent="."]
+position = Vector2(252, 108)
+scale = Vector2(0.2, 0.2)
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="Platform5"]
+mesh = SubResource("QuadMesh_mju6a")
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platform5"]
+position = Vector2(2.08165e-12, 2.08165e-12)
+shape = SubResource("RectangleShape2D_htbtm")
+one_way_collision = true
+one_way_collision_margin = 2.0
+metadata/_edit_lock_ = true
+
+[node name="Platform6" type="StaticBody2D" parent="."]
+position = Vector2(215, 71)
+scale = Vector2(0.2, 0.2)
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="Platform6"]
+mesh = SubResource("QuadMesh_mju6a")
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platform6"]
+position = Vector2(2.08165e-12, 2.08165e-12)
+shape = SubResource("RectangleShape2D_htbtm")
+one_way_collision = true
+one_way_collision_margin = 2.0
+metadata/_edit_lock_ = true
+
+[node name="Platform7" type="StaticBody2D" parent="."]
+position = Vector2(252, 35)
+scale = Vector2(0.2, 0.2)
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="Platform7"]
+mesh = SubResource("QuadMesh_mju6a")
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platform7"]
+position = Vector2(2.08165e-12, 2.08165e-12)
+shape = SubResource("RectangleShape2D_htbtm")
+one_way_collision = true
+one_way_collision_margin = 2.0
+metadata/_edit_lock_ = true
+
+[node name="Platform8" type="StaticBody2D" parent="."]
+position = Vector2(215, 144)
+scale = Vector2(0.2, 0.2)
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="Platform8"]
+mesh = SubResource("QuadMesh_mju6a")
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platform8"]
+position = Vector2(2.08165e-12, 2.08165e-12)
+shape = SubResource("RectangleShape2D_htbtm")
+one_way_collision = true
+one_way_collision_margin = 2.0
+metadata/_edit_lock_ = true

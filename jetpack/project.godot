@@ -52,7 +52,7 @@ shoot={
 
 [physics]
 
-2d/default_gravity=98.0
+2d/default_gravity=980.0
 
 [rendering]
 
