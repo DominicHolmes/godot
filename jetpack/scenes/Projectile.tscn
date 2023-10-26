@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://ddvhfcds7i8ar"]
+[gd_scene load_steps=5 format=3 uid="uid://ddvhfcds7i8ar"]
 
 [ext_resource type="Script" path="res://scenes/Projectile.gd" id="1_r321p"]
+[ext_resource type="PackedScene" uid="uid://dukpjn5x08bub" path="res://scenes/Trail.tscn" id="2_87t0o"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_p74d3"]
 radius = 2.0
@@ -24,5 +25,11 @@ rotation = 1.5708
 mesh = SubResource("CapsuleMesh_h63ba")
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+
+[node name="Trail" parent="." instance=ExtResource("2_87t0o")]
+modulate = Color(0.992157, 0.329412, 0.180392, 1)
+show_behind_parent = true
+max_length = 8
+thickness = 2.0
 
 [connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]

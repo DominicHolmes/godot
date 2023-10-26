@@ -4,15 +4,13 @@ extends RigidBody2D
 @onready var screen_size = get_viewport_rect().size
 
 func _ready():
-	gravity_scale = 0
-
-func _physics_process(delta):
+	gravity_scale = 0.2
 	var forward_dir = Vector2.from_angle(rotation).normalized()
 	linear_velocity = forward_dir * speed
 
-func _process(delta):
-	# Wrap x position
-	position.x = wrapf(position.x, 0, screen_size.x)
+func _physics_process(delta):
+	rotation = linear_velocity.angle()
+	pass
 
 func _on_visible_on_screen_notifier_2d_screen_exited():
 	print("QUEUE FREE")

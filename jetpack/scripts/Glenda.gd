@@ -13,6 +13,8 @@ var fireball_scene = preload("res://scenes/Projectile.tscn")
 #var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
 func _physics_process(delta):
+	# TODO add coyote time
+	
 	if !is_on_floor():
 		velocity.y += (grav * delta)
 		anim.play("run") # falling
@@ -50,9 +52,8 @@ func _process(delta):
 		
 func fire_projectile(mouse_position):
 	var fireball = fireball_scene.instantiate()
-	get_parent().add_child(fireball)
-	# TODO: instead originate from Marker2D rotating around player
+		# TODO: instead originate from Marker2D rotating around player
 	fireball.global_position = global_position
-	var mouse_direction = (mouse_position - fireball.global_position).normalized()
-	print("mouse_dir", mouse_direction)
+	var mouse_direction = (mouse_position - global_position).normalized()
 	fireball.rotation = atan2(mouse_direction.y, mouse_direction.x)
+	get_parent().add_child(fireball)
