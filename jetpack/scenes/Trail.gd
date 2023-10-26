@@ -3,10 +3,12 @@ extends Node2D
 @export var max_length = 20
 @export var thickness = 3.0
 
+@onready var screen_size = get_viewport_rect().size
+
 var points = []
 var frame = 0
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	# Runs at 60 fps, so updating each 3rd frame is equivalent to updating each
 	# 1/20 of a second. This reduces size of points array.
 	if frame % 3 == 0:
@@ -40,3 +42,5 @@ func _draw():
 	draw_set_transform(Vector2(0,0), -get_parent().rotation, Vector2(1,1))
 	draw_polyline_colors(adjusted, colors, thickness, antialias)
 		
+func is_value_in_range(value, min_value, max_value):
+	return value >= min_value && value <= max_value

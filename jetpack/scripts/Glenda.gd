@@ -39,11 +39,9 @@ func _physics_process(delta):
 	
 	move_and_slide()
 
-func _process(delta):
+func _process(_delta):
 	if Input.is_action_just_pressed("shoot"):
 		var mouse_position = get_viewport().get_mouse_position()
-		print("mouse_pos", mouse_position)
-		print("global_position_player", global_position)
 		fire_projectile(mouse_position)
 	
 	# Wrap character position
