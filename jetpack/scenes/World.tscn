@@ -1,7 +1,14 @@
-[gd_scene load_steps=3 format=3 uid="uid://d4anc650nekqw"]
+[gd_scene load_steps=4 format=3 uid="uid://d4anc650nekqw"]
 
 [ext_resource type="Script" path="res://scripts/World.gd" id="1_phpf5"]
 [ext_resource type="PackedScene" uid="uid://dt0unpcr0qft0" path="res://scenes/Arena.tscn" id="2_l3gm5"]
+
+[sub_resource type="Environment" id="Environment_2y7tp"]
+background_mode = 3
+glow_enabled = true
+glow_intensity = 4.03
+glow_bloom = 0.2
+volumetric_fog_density = 0.3375
 
 [node name="World" type="Node2D"]
 position = Vector2(2.08165e-12, 2.08165e-12)
@@ -59,6 +66,9 @@ placeholder_text = "Enter Join Address"
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("res://scenes/Session.tscn")
 spawn_path = NodePath("..")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_2y7tp")
 
 [connection signal="pressed" from="CanvasLayer/MainMenu/MarginContainer/VBoxContainer/HostButton" to="." method="_on_host_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/MarginContainer/VBoxContainer/JoinButton" to="." method="_on_join_button_pressed"]

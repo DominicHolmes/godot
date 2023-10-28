@@ -8,7 +8,7 @@ enum ProjectileType { FIRE, WATER, EARTH, AIR }
 @export var initial_linear_velocity: Vector2
 @export var caster_id = -1
 @export var explosion_position: Vector2
-@export var projectile_type = ProjectileType.WATER
+@export var projectile_type = ProjectileType.FIRE
 
 func _enter_tree():
 	set_multiplayer_authority(get_parent().get_multiplayer_authority())
@@ -70,13 +70,13 @@ func queue_free_with_delay(wait_time):
 	
 func _adjust_trail_color():
 	if projectile_type == ProjectileType.FIRE:
-		$Trail.modulate = Color("d1773a", 0.7)
+		$ProjectileTrail.set_fading_color(Color("d1773a"))
 	elif projectile_type == ProjectileType.WATER:
-		$Trail.modulate = Color("7ccae1", 0.7)
+		$ProjectileTrail.set_fading_color(Color("7ccae1"))
 	elif projectile_type == ProjectileType.AIR:
-		$Trail.modulate = Color("ffffff", 0.5)
+		$ProjectileTrail.set_fading_color(Color("ffffff"))
 	elif projectile_type == ProjectileType.EARTH:
-		$Trail.modulate = Color("875940", 0.7)
+		$ProjectileTrail.set_fading_color(Color("875940"))
 	
 func _play_travel_animation():
 	if projectile_type == ProjectileType.FIRE:

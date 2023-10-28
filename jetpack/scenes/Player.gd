@@ -41,6 +41,9 @@ func _physics_process(delta):
 		if jumps_remaining > 0:
 			jumps_remaining -= 1
 			velocity.y = JUMP_VELOCITY
+			
+	var recoil_modifier = 30 if is_recoiling else 0
+	var recoil_direction = 1 if abs(rad_to_deg(aim_rotation)) >= 90 else -1
 	
 	# handle x input
 	var direction = Input.get_axis("move_left", "move_right")
@@ -49,6 +52,8 @@ func _physics_process(delta):
 		velocity.x = direction * SPEED * is_on_floor_modifier
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED * is_on_floor_modifier)
+		
+	velocity.x += (recoil_modifier * recoil_direction * charge_duration)
 
 	move_and_slide()
 
@@ -61,7 +66,7 @@ func _input(event):
 	if event.is_action_pressed("shoot"):
 		is_charging = true
 		charge_duration = 0.0
-	elif event.is_action_released("shoot"):
+	elif event.is_action_released("shoot") and not is_recoiling:
 		is_charging = false
 		did_show_charge_sparks = false
 		fire_projectile()
@@ -126,7 +131,12 @@ func fire_projectile():
 	fireball.rotation = aim_rotation
 	fireball.setup_initial_velocity(charge_duration)
 	get_parent().add_child(fireball, true)
+	recoil_from_firing_projectile()
+	
+func recoil_from_firing_projectile():
 	is_recoiling = true
+	var fired_right = abs(rad_to_deg(aim_rotation)) >= 90
+	velocity.x += 200 if fired_right else -200
 
 func _on_area_2d_body_entered(body):
 	# Players detect and attempt to trigger all projectile collisions

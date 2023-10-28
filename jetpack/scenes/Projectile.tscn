@@ -1,8 +1,17 @@
-[gd_scene load_steps=6 format=3 uid="uid://ddvhfcds7i8ar"]
+[gd_scene load_steps=9 format=3 uid="uid://ddvhfcds7i8ar"]
 
 [ext_resource type="Script" path="res://scripts/Projectile.gd" id="1_kyaav"]
 [ext_resource type="SpriteFrames" uid="uid://qmc778cgs5b8" path="res://sprite_frames/ProjectileSpriteFrames.tres" id="2_7ls1o"]
-[ext_resource type="PackedScene" uid="uid://dukpjn5x08bub" path="res://scenes/Trail.tscn" id="2_87t0o"]
+[ext_resource type="Script" path="res://scenes/ProjectileTrail.gd" id="2_ou00r"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_3teo8"]
+blend_mode = 1
+
+[sub_resource type="Curve" id="Curve_45sgv"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.99999, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_hp530"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_p74d3"]
 radius = 3.0
@@ -39,6 +48,16 @@ collision_layer = 4
 collision_mask = 0
 script = ExtResource("1_kyaav")
 
+[node name="ProjectileTrail" type="Line2D" parent="."]
+modulate = Color(2, 2, 2, 1)
+material = SubResource("CanvasItemMaterial_3teo8")
+position = Vector2(2.08165e-12, 2.08165e-12)
+points = PackedVector2Array(-9, 2, -20, 6, -31, 10, -42, 16, -73, 21)
+width = 3.0
+width_curve = SubResource("Curve_45sgv")
+gradient = SubResource("Gradient_hp530")
+script = ExtResource("2_ou00r")
+
 [node name="ProjectileAnimation" type="AnimatedSprite2D" parent="."]
 position = Vector2(2.08165e-12, -0.5)
 sprite_frames = ExtResource("2_7ls1o")
@@ -52,12 +71,6 @@ shape = SubResource("CapsuleShape2D_p74d3")
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
 position = Vector2(2.38419e-07, -5.96046e-08)
 scale = Vector2(0.4, 0.2)
-
-[node name="Trail" parent="." instance=ExtResource("2_87t0o")]
-modulate = Color(0.486275, 0.792157, 0.882353, 1)
-show_behind_parent = true
-max_length = 8
-thickness = 2.0
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_gmhnj")
