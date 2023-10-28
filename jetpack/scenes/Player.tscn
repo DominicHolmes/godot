@@ -1,23 +1,20 @@
-[gd_scene load_steps=47 format=3 uid="uid://dk2vpvvjaghp4"]
+[gd_scene load_steps=48 format=3 uid="uid://dk2vpvvjaghp4"]
 
 [ext_resource type="Texture2D" uid="uid://n1b7pq2lyx53" path="res://assets/mages/mage_blue.png" id="1_4fg6x"]
 [ext_resource type="Script" path="res://scenes/Player.gd" id="1_jjqe2"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_0bto8"]
-atlas = ExtResource("1_4fg6x")
-region = Rect2(320, 384, 64, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_b4hoo"]
-atlas = ExtResource("1_4fg6x")
-region = Rect2(384, 384, 64, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_tvpp7"]
-atlas = ExtResource("1_4fg6x")
-region = Rect2(448, 384, 64, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_igu10"]
-atlas = ExtResource("1_4fg6x")
-region = Rect2(512, 384, 64, 64)
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_l6oj1"]
+lifetime_randomness = 0.79
+particle_flag_disable_z = true
+direction = Vector3(2.08165e-12, 1, 2.08165e-12)
+spread = 21.0
+gravity = Vector3(2.08165e-12, 60, 2.08165e-12)
+initial_velocity_min = -30.0
+initial_velocity_max = -30.0
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
+hue_variation_min = -0.05
+hue_variation_max = 0.07
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3k6s4"]
 atlas = ExtResource("1_4fg6x")
@@ -74,6 +71,22 @@ region = Rect2(448, 448, 64, 64)
 [sub_resource type="AtlasTexture" id="AtlasTexture_bvuul"]
 atlas = ExtResource("1_4fg6x")
 region = Rect2(512, 448, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0bto8"]
+atlas = ExtResource("1_4fg6x")
+region = Rect2(320, 384, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b4hoo"]
+atlas = ExtResource("1_4fg6x")
+region = Rect2(384, 384, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tvpp7"]
+atlas = ExtResource("1_4fg6x")
+region = Rect2(448, 384, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_igu10"]
+atlas = ExtResource("1_4fg6x")
+region = Rect2(512, 384, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_300of"]
 atlas = ExtResource("1_4fg6x")
@@ -167,23 +180,6 @@ region = Rect2(448, 192, 64, 64)
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_0bto8")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_b4hoo")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_tvpp7")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_igu10")
-}],
-"loop": true,
-"name": &"attach_complete_ground",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
 "texture": SubResource("AtlasTexture_3k6s4")
 }, {
 "duration": 1.0,
@@ -198,8 +194,19 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_kv2kv")
 }],
-"loop": true,
+"loop": false,
 "name": &"attack_channel_air",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m6h45")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kv2kv")
+}],
+"loop": true,
+"name": &"attack_channel_air_loop",
 "speed": 5.0
 }, {
 "frames": [{
@@ -218,8 +225,19 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_6xx8w")
 }],
-"loop": true,
+"loop": false,
 "name": &"attack_channel_ground",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1dblc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6xx8w")
+}],
+"loop": true,
+"name": &"attack_channel_ground_loop",
 "speed": 5.0
 }, {
 "frames": [{
@@ -235,9 +253,26 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_bvuul")
 }],
-"loop": true,
+"loop": false,
 "name": &"attack_complete_air",
-"speed": 5.0
+"speed": 15.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0bto8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b4hoo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tvpp7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_igu10")
+}],
+"loop": false,
+"name": &"attack_complete_ground",
+"speed": 15.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -353,10 +388,19 @@ properties/3/watch = false
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_jjqe2")
 
+[node name="ChargedSparks" type="GPUParticles2D" parent="."]
+position = Vector2(-8.5, -10)
+emitting = false
+amount = 10
+process_material = SubResource("ParticleProcessMaterial_l6oj1")
+one_shot = true
+speed_scale = 1.76
+explosiveness = 0.79
+
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -9)
 sprite_frames = SubResource("SpriteFrames_86gmt")
-animation = &"walk_forward"
+animation = &"attack_channel_air_loop"
 autoplay = "idle_ground"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

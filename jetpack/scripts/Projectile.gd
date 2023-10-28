@@ -3,7 +3,7 @@ class_name Projectile
 
 enum ProjectileType { FIRE, WATER, EARTH, AIR }
 
-@export var speed = 300
+@export var speed = 500
 @onready var screen_size = get_viewport_rect().size
 @export var initial_linear_velocity: Vector2
 @export var caster_id = -1
@@ -13,9 +13,11 @@ enum ProjectileType { FIRE, WATER, EARTH, AIR }
 func _enter_tree():
 	set_multiplayer_authority(get_parent().get_multiplayer_authority())
 	
-func setup_initial_velocity():
+# Called with the charge_duration, in seconds
+func setup_initial_velocity(charge_duration):
 	var forward_dir = Vector2.from_angle(rotation).normalized()
-	initial_linear_velocity = forward_dir * speed
+	var clamped_duration = clampf(charge_duration, 0.2, 1.3)
+	initial_linear_velocity = forward_dir * speed * clamped_duration
 	
 func _ready():
 	linear_velocity = initial_linear_velocity

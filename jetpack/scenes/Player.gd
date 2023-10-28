@@ -16,6 +16,11 @@ var jumps_remaining = 100
 @export var aim_rotation = 0.0
 @export var player_id = 0
 
+var is_charging = false
+var is_recoiling = false
+var did_show_charge_sparks = false
+var charge_duration = 0.0
+
 func _enter_tree():
 	print("In player, multi_auth: ", get_parent().get_multiplayer_authority())
 	set_multiplayer_authority(get_parent().get_multiplayer_authority())
@@ -52,16 +57,25 @@ func _input(event):
 	if event is InputEventMouseMotion:
 		var mouse_direction = (event.position - global_position).normalized()
 		aim_rotation = atan2(mouse_direction.y, mouse_direction.x)
+	
+	if event.is_action_pressed("shoot"):
+		is_charging = true
+		charge_duration = 0.0
+	elif event.is_action_released("shoot"):
+		is_charging = false
+		did_show_charge_sparks = false
+		fire_projectile()
 
 func _process(delta):
 	update_animation()
 	update_aim_rotation()
 	if not is_multiplayer_authority(): return
 	wrap_position_if_off_screen()
-	
-	if Input.is_action_just_pressed("shoot"):
-		var mouse_position = get_viewport().get_mouse_position()
-		fire_projectile(mouse_position)
+	if is_charging:
+		charge_duration += delta
+		if not did_show_charge_sparks and charge_duration > 1:
+			$ChargedSparks.emitting = true
+			did_show_charge_sparks = true
 	
 func wrap_position_if_off_screen():
 	position.x = wrapf(position.x, 0, screen_size.x)
@@ -71,45 +85,51 @@ func update_aim_rotation():
 	$AimRotation.rotation = aim_rotation
 	
 func update_animation():
-	Anim.flip_h = abs(rad_to_deg(aim_rotation)) >= 90
-	if velocity.x == 0:
-		if is_on_floor():
-			Anim.play("idle_ground")
+	var face_right = abs(rad_to_deg(aim_rotation)) >= 90
+	Anim.flip_h = face_right
+	$ChargedSparks.position = Vector2(8.5 if face_right else -8.5, -12)
+	
+	if is_recoiling:
+		if Anim.animation == "attack_complete_ground" or Anim.animation == "attack_complete_air":
+			if !Anim.is_playing():
+				is_recoiling = false
 		else:
-			Anim.play("idle_air")
-	elif velocity.x != 0:
+			Anim.play("attack_complete_ground" if is_on_floor() else "attack_complete_air")
+	elif is_charging:
 		if is_on_floor():
-			Anim.play("walk_forward")
+			if charge_duration < 1:
+				Anim.play("attack_channel_ground")
+			else:
+				Anim.play("attack_channel_ground_loop")
 		else:
-			Anim.play("fly_forward")
+			if charge_duration < 1:
+				Anim.play("attack_channel_air")
+			else:
+				Anim.play("attack_channel_air_loop")
+	else:
+		if velocity.x == 0:
+			if is_on_floor():
+				Anim.play("idle_ground")
+			else:
+				Anim.play("idle_air")
+		elif velocity.x != 0:
+			if is_on_floor():
+				Anim.play("walk_forward")
+			else:
+				Anim.play("fly_forward")
 
-func fire_projectile(mouse_position):
+func fire_projectile():
 	var fireball = fireball_scene.instantiate()
+	print("FIRE with charge duration: ", charge_duration)
 	fireball.global_position = $AimRotation/Reticle.global_position
 	fireball.caster_id = multiplayer.get_unique_id()
 	fireball.rotation = aim_rotation
-	fireball.setup_initial_velocity()
+	fireball.setup_initial_velocity(charge_duration)
 	get_parent().add_child(fireball, true)
-
+	is_recoiling = true
 
 func _on_area_2d_body_entered(body):
-	print("COLLISION DETECTED")
-	print("Mult id ", multiplayer.get_unique_id())
-	print("Player id ", player_id)
-	print("Is server ", multiplayer.is_server())
 	# Players detect and attempt to trigger all projectile collisions
 	if body.caster_id != player_id:
-		# Only owner of projectile will succeed in triggering
-		print("Collision detected with caster_id of ", body.caster_id)
-		print("Mult id ", multiplayer.get_unique_id())
-		print("Is server ", multiplayer.is_server())
+		# Only owner of projectile will succeed in triggering collision
 		body.trigger_explosion()
-		
-		
-#	if not is_multiplayer_authority(): return
-#	if body is Projectile:
-#		# Do not detect collisions of your own projectiles
-#		if body.caster_id != multiplayer.get_unique_id():
-#			print("Collision detected with caster_id of ", body.caster_id)
-#			print("Mult id ", multiplayer.get_unique_id())
-#			body.trigger_explosion()
