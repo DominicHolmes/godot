@@ -1,11 +1,14 @@
 extends RigidBody2D
 class_name Projectile
 
+enum ProjectileType { FIRE, WATER, EARTH, AIR }
+
 @export var speed = 300
 @onready var screen_size = get_viewport_rect().size
 @export var initial_linear_velocity: Vector2
 @export var caster_id = -1
 @export var explosion_position: Vector2
+@export var projectile_type = ProjectileType.WATER
 
 func _enter_tree():
 	set_multiplayer_authority(get_parent().get_multiplayer_authority())
@@ -16,14 +19,16 @@ func setup_initial_velocity():
 	
 func _ready():
 	linear_velocity = initial_linear_velocity
+	_play_travel_animation()
+	_adjust_trail_color()
 
 func _process(_delta):
-	if explosion_position && $AnimatedSprite2D.animation != "fire_explode":
+	if explosion_position and not _is_playing_explode_animation():
 		position = explosion_position
 		linear_velocity = Vector2.ZERO
-		$AnimatedSprite2D.play("fire_explode")
-		
-		$AnimatedSprite2D.connect("animation_finished", explosion_animation_finished)
+		_play_explode_animation()
+		$ProjectileAnimation.connect("animation_finished", 
+			explosion_animation_finished)
 
 func _physics_process(_delta):
 	if explosion_position:
@@ -60,3 +65,39 @@ func queue_free_with_delay(wait_time):
 	timer.connect("timeout", queue_free)
 	add_child(timer)
 	timer.start()
+	
+func _adjust_trail_color():
+	if projectile_type == ProjectileType.FIRE:
+		$Trail.modulate = Color("d1773a", 0.7)
+	elif projectile_type == ProjectileType.WATER:
+		$Trail.modulate = Color("7ccae1", 0.7)
+	elif projectile_type == ProjectileType.AIR:
+		$Trail.modulate = Color("ffffff", 0.5)
+	elif projectile_type == ProjectileType.EARTH:
+		$Trail.modulate = Color("875940", 0.7)
+	
+func _play_travel_animation():
+	if projectile_type == ProjectileType.FIRE:
+		$ProjectileAnimation.play("travel_fire")
+	elif projectile_type == ProjectileType.WATER:
+		$ProjectileAnimation.play("travel_water")
+	elif projectile_type == ProjectileType.AIR:
+		$ProjectileAnimation.play("travel_air")
+	elif projectile_type == ProjectileType.EARTH:
+		$ProjectileAnimation.play("travel_earth")
+
+func _play_explode_animation():
+	if projectile_type == ProjectileType.FIRE:
+		$ProjectileAnimation.play("explode_fire")
+	elif projectile_type == ProjectileType.WATER:
+		$ProjectileAnimation.play("explode_water")
+	elif projectile_type == ProjectileType.AIR:
+		$ProjectileAnimation.play("explode_air")
+	elif projectile_type == ProjectileType.EARTH:
+		$ProjectileAnimation.play("explode_earth")
+
+func _is_playing_explode_animation():
+	return $ProjectileAnimation.animation == "explode_fire" or \
+		$ProjectileAnimation.animation == "explode_water" or \
+		$ProjectileAnimation.animation == "explode_air" or \
+		$ProjectileAnimation.animation == "explode_earth"
