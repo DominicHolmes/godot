@@ -1,29 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://d4anc650nekqw"]
+[gd_scene load_steps=3 format=3 uid="uid://d4anc650nekqw"]
 
 [ext_resource type="Script" path="res://scripts/World.gd" id="1_phpf5"]
 [ext_resource type="PackedScene" uid="uid://dt0unpcr0qft0" path="res://scenes/Arena.tscn" id="2_l3gm5"]
 
-[sub_resource type="QuadMesh" id="QuadMesh_mju6a"]
-size = Vector2(320, 10)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_htbtm"]
-size = Vector2(320, 10)
-
 [node name="World" type="Node2D"]
 position = Vector2(2.08165e-12, 2.08165e-12)
 script = ExtResource("1_phpf5")
-metadata/_edit_lock_ = true
-
-[node name="Floor" type="StaticBody2D" parent="."]
-position = Vector2(160, 174)
-
-[node name="MeshInstance2D" type="MeshInstance2D" parent="Floor"]
-mesh = SubResource("QuadMesh_mju6a")
-metadata/_edit_lock_ = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
-position = Vector2(0.5, 0)
-shape = SubResource("RectangleShape2D_htbtm")
 metadata/_edit_lock_ = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
