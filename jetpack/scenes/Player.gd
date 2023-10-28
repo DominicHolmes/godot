@@ -14,6 +14,7 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 # set to 1 initially, in case the character is falling. sets to 2 once on floor
 var jumps_remaining = 100
 @export var aim_rotation = 0.0
+@export var player_id = 0
 
 func _enter_tree():
 	print("In player, multi_auth: ", get_parent().get_multiplayer_authority())
@@ -83,13 +84,32 @@ func update_animation():
 			Anim.play("fly_forward")
 
 func fire_projectile(mouse_position):
-	print("FIRE PROJECTILE")
-	print("is on server: ", multiplayer.is_server())
-	
 	var fireball = fireball_scene.instantiate()
-		# TODO: instead originate from Marker2D rotating around player
 	fireball.global_position = $AimRotation/Reticle.global_position
-	var mouse_direction = (mouse_position - global_position).normalized()
+	fireball.caster_id = multiplayer.get_unique_id()
 	fireball.rotation = aim_rotation
 	fireball.setup_initial_velocity()
 	get_parent().add_child(fireball, true)
+
+
+func _on_area_2d_body_entered(body):
+	print("COLLISION DETECTED")
+	print("Mult id ", multiplayer.get_unique_id())
+	print("Player id ", player_id)
+	print("Is server ", multiplayer.is_server())
+	# Players detect and attempt to trigger all projectile collisions
+	if body.caster_id != player_id:
+		# Only owner of projectile will succeed in triggering
+		print("Collision detected with caster_id of ", body.caster_id)
+		print("Mult id ", multiplayer.get_unique_id())
+		print("Is server ", multiplayer.is_server())
+		body.trigger_explosion()
+		
+		
+#	if not is_multiplayer_authority(): return
+#	if body is Projectile:
+#		# Do not detect collisions of your own projectiles
+#		if body.caster_id != multiplayer.get_unique_id():
+#			print("Collision detected with caster_id of ", body.caster_id)
+#			print("Mult id ", multiplayer.get_unique_id())
+#			body.trigger_explosion()

@@ -11,5 +11,6 @@ func _enter_tree():
 func _ready():
 	if not is_multiplayer_authority(): return
 	var player = Player.instantiate()
+	player.player_id = str(name).to_int()
 	add_child(player, true)
 

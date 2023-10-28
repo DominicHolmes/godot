@@ -1,8 +1,11 @@
 extends RigidBody2D
+class_name Projectile
 
 @export var speed = 300
 @onready var screen_size = get_viewport_rect().size
 @export var initial_linear_velocity: Vector2
+@export var caster_id = -1
+@export var explosion_position: Vector2
 
 func _enter_tree():
 	set_multiplayer_authority(get_parent().get_multiplayer_authority())
@@ -14,9 +17,30 @@ func setup_initial_velocity():
 func _ready():
 	linear_velocity = initial_linear_velocity
 
+func _process(_delta):
+	if explosion_position && $AnimatedSprite2D.animation != "fire_explode":
+		position = explosion_position
+		linear_velocity = Vector2.ZERO
+		$AnimatedSprite2D.play("fire_explode")
+		
+		$AnimatedSprite2D.connect("animation_finished", explosion_animation_finished)
+
 func _physics_process(_delta):
-	gravity_scale = 0.2
-	rotation = linear_velocity.angle()
+	if explosion_position:
+		gravity_scale = 0
+		linear_velocity = Vector2.ZERO
+		rotation = 0
+	else:
+		gravity_scale = 0.2
+		rotation = linear_velocity.angle()
+	
+func trigger_explosion():
+	if not is_multiplayer_authority(): return
+	explosion_position = position
+
+func explosion_animation_finished():
+	if not is_multiplayer_authority(): return
+	queue_free()
 
 func _on_visible_on_screen_notifier_2d_screen_exited():
 	if not is_multiplayer_authority(): return
