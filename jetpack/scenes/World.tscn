@@ -6,8 +6,9 @@
 [sub_resource type="Environment" id="Environment_2y7tp"]
 background_mode = 3
 glow_enabled = true
-glow_intensity = 4.03
-glow_bloom = 0.2
+glow_bloom = 0.03
+glow_blend_mode = 0
+glow_hdr_scale = 4.0
 volumetric_fog_density = 0.3375
 
 [node name="World" type="Node2D"]
