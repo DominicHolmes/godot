@@ -3,6 +3,7 @@ extends CharacterBody2D
 
 const SPEED = 120.0
 const JUMP_VELOCITY = -300.0
+const RECOIL = 40.0
 
 @onready var Anim = $AnimatedSprite2D
 @onready var screen_size = get_viewport_rect().size
@@ -16,10 +17,10 @@ var jumps_remaining = 100
 @export var aim_rotation = 0.0
 @export var player_id = 0
 
-var is_charging = false
-var is_recoiling = false
+@export var is_charging = false
+@export var is_recoiling = false
 var did_show_charge_sparks = false
-var charge_duration = 0.0
+@export var charge_duration = 0.0
 
 func _enter_tree():
 	print("In player, multi_auth: ", get_parent().get_multiplayer_authority())
@@ -41,9 +42,6 @@ func _physics_process(delta):
 		if jumps_remaining > 0:
 			jumps_remaining -= 1
 			velocity.y = JUMP_VELOCITY
-			
-	var recoil_modifier = 30 if is_recoiling else 0
-	var recoil_direction = 1 if abs(rad_to_deg(aim_rotation)) >= 90 else -1
 	
 	# handle x input
 	var direction = Input.get_axis("move_left", "move_right")
@@ -52,8 +50,11 @@ func _physics_process(delta):
 		velocity.x = direction * SPEED * is_on_floor_modifier
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED * is_on_floor_modifier)
-		
-	velocity.x += (recoil_modifier * recoil_direction * charge_duration)
+	
+	# add recoil
+	var recoil_modifier = clampf(RECOIL * charge_duration, 0, RECOIL * 1.3) if is_recoiling else 0
+	var recoil_direction = 1 if abs(rad_to_deg(aim_rotation)) >= 90 else -1
+	velocity.x += (recoil_modifier * recoil_direction)
 
 	move_and_slide()
 
