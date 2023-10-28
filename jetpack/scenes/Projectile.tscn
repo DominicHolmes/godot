@@ -57,6 +57,7 @@ width = 3.0
 width_curve = SubResource("Curve_45sgv")
 gradient = SubResource("Gradient_hp530")
 script = ExtResource("2_ou00r")
+length = 12
 
 [node name="ProjectileAnimation" type="AnimatedSprite2D" parent="."]
 position = Vector2(2.08165e-12, -0.5)
