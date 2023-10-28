@@ -1,7 +1,8 @@
-[gd_scene load_steps=48 format=3 uid="uid://dk2vpvvjaghp4"]
+[gd_scene load_steps=53 format=3 uid="uid://dk2vpvvjaghp4"]
 
 [ext_resource type="Texture2D" uid="uid://n1b7pq2lyx53" path="res://assets/mages/mage_blue.png" id="1_4fg6x"]
 [ext_resource type="Script" path="res://scenes/Player.gd" id="1_jjqe2"]
+[ext_resource type="PackedScene" uid="uid://df3t4tklm5xu6" path="res://scenes/Mouse_Collision.tscn" id="3_wqspf"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_l6oj1"]
 lifetime_randomness = 0.79
@@ -87,6 +88,22 @@ region = Rect2(448, 384, 64, 64)
 [sub_resource type="AtlasTexture" id="AtlasTexture_igu10"]
 atlas = ExtResource("1_4fg6x")
 region = Rect2(512, 384, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r5w1v"]
+atlas = ExtResource("1_4fg6x")
+region = Rect2(64, 320, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7me3h"]
+atlas = ExtResource("1_4fg6x")
+region = Rect2(128, 320, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u3tmx"]
+atlas = ExtResource("1_4fg6x")
+region = Rect2(192, 320, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_royi7"]
+atlas = ExtResource("1_4fg6x")
+region = Rect2(256, 320, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_300of"]
 atlas = ExtResource("1_4fg6x")
@@ -276,6 +293,23 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_r5w1v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7me3h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u3tmx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_royi7")
+}],
+"loop": false,
+"name": &"blink",
+"speed": 20.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_300of")
 }, {
 "duration": 1.0,
@@ -394,6 +428,14 @@ properties/6/path = NodePath(".:charge_duration")
 properties/6/spawn = true
 properties/6/sync = true
 properties/6/watch = false
+properties/7/path = NodePath(".:is_blinking_in")
+properties/7/spawn = true
+properties/7/sync = true
+properties/7/watch = false
+properties/8/path = NodePath(".:is_blinking_out")
+properties/8/spawn = true
+properties/8/sync = true
+properties/8/watch = false
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_vdnt4"]
 
@@ -412,8 +454,10 @@ explosiveness = 0.79
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -9)
 sprite_frames = SubResource("SpriteFrames_86gmt")
-animation = &"attack_channel_air_loop"
+animation = &"blink"
 autoplay = "idle_ground"
+frame = 3
+frame_progress = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -2)
@@ -437,4 +481,8 @@ collision_mask = 4
 position = Vector2(0, -2)
 shape = SubResource("CapsuleShape2D_qkmuq")
 
+[node name="MouseCollision" parent="." instance=ExtResource("3_wqspf")]
+
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="mouse_collision_area_entered" from="MouseCollision" to="." method="_on_mouse_collision_mouse_collision_area_entered"]
+[connection signal="mouse_collision_area_exited" from="MouseCollision" to="." method="_on_mouse_collision_mouse_collision_area_exited"]

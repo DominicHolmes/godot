@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://df3t4tklm5xu6"]
+
+[ext_resource type="Script" path="res://scenes/Mouse_Collision.gd" id="1_ycsqd"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qj6b1"]
+
+[node name="MouseCollision" type="Area2D"]
+scale = Vector2(0.8, 0.8)
+script = ExtResource("1_ycsqd")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_qj6b1")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]

@@ -22,9 +22,16 @@ var jumps_remaining = 100
 var did_show_charge_sparks = false
 @export var charge_duration = 0.0
 
+@export var is_blinking_out = false
+@export var is_blinking_in = false
+var blink_to_location: Vector2
+var can_blink_to_current_mouse_position = false
+
 func _enter_tree():
-	print("In player, multi_auth: ", get_parent().get_multiplayer_authority())
 	set_multiplayer_authority(get_parent().get_multiplayer_authority())
+
+func _ready():
+	Anim.connect("animation_finished", animation_finished)
 
 func _physics_process(delta):
 	if not is_multiplayer_authority(): return
@@ -63,7 +70,6 @@ func _input(event):
 	if event is InputEventMouseMotion:
 		var mouse_direction = (event.position - global_position).normalized()
 		aim_rotation = atan2(mouse_direction.y, mouse_direction.x)
-	
 	if event.is_action_pressed("shoot"):
 		is_charging = true
 		charge_duration = 0.0
@@ -71,6 +77,8 @@ func _input(event):
 		is_charging = false
 		did_show_charge_sparks = false
 		fire_projectile()
+	elif event.is_action_pressed("blink") and not is_recoiling:
+		blink()
 
 func _process(delta):
 	update_animation()
@@ -95,7 +103,11 @@ func update_animation():
 	Anim.flip_h = face_right
 	$ChargedSparks.position = Vector2(8.5 if face_right else -8.5, -12)
 	
-	if is_recoiling:
+	if is_blinking_out:
+		Anim.play("blink")
+	elif is_blinking_in:
+		Anim.play_backwards("blink")
+	elif is_recoiling:
 		if Anim.animation == "attack_complete_ground" or Anim.animation == "attack_complete_air":
 			if !Anim.is_playing():
 				is_recoiling = false
@@ -124,15 +136,34 @@ func update_animation():
 			else:
 				Anim.play("fly_forward")
 
+func animation_finished():
+	if not is_multiplayer_authority(): return
+	if Anim.animation == "blink" and not is_blinking_in:
+		is_blinking_in = true
+		is_blinking_out = false
+		position = blink_to_location
+	elif Anim.animation == "blink" and is_blinking_in:
+		is_blinking_in = false
+		is_blinking_out = false
+
 func fire_projectile():
 	var fireball = fireball_scene.instantiate()
-	print("FIRE with charge duration: ", charge_duration)
 	fireball.global_position = $AimRotation/Reticle.global_position
 	fireball.caster_id = multiplayer.get_unique_id()
 	fireball.rotation = aim_rotation
 	fireball.setup_initial_velocity(charge_duration)
 	get_parent().add_child(fireball, true)
 	recoil_from_firing_projectile()
+	
+func blink():
+	if not can_blink_to_current_mouse_position: return
+	var mouse_position = get_global_mouse_position()
+	is_blinking_out = true
+	is_blinking_in = false
+	blink_to_location = Vector2(
+		clampf(mouse_position.x, 0, screen_size.x),
+		clampf(mouse_position.y, 0, screen_size.y),
+	)
 	
 func recoil_from_firing_projectile():
 	is_recoiling = true
@@ -144,3 +175,9 @@ func _on_area_2d_body_entered(body):
 	if body.caster_id != player_id:
 		# Only owner of projectile will succeed in triggering collision
 		body.trigger_explosion()
+
+func _on_mouse_collision_mouse_collision_area_entered():
+	can_blink_to_current_mouse_position = false
+	
+func _on_mouse_collision_mouse_collision_area_exited():
+	can_blink_to_current_mouse_position = true
